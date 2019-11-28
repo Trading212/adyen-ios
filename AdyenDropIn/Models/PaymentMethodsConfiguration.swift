@@ -17,6 +17,8 @@ extension DropInComponent {
         
         public var applePay = ApplePayConfiguration()
         
+        public var navigation = NavigationConfiguration()
+        
         /// Initializes the drop in configuration.
         public init() {}
         
@@ -42,6 +44,12 @@ extension DropInComponent {
             /// The merchant identifier for apple pay.
             public var merchantIdentifier: String?
             
+        }
+        
+        public final class NavigationConfiguration {
+            
+            /// Skip the list component if only a single regular payment method is available.
+            public var flattensSinglePaymentMethodConfiguration = true
         }
     }
 }
