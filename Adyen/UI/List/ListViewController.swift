@@ -103,7 +103,7 @@ public final class ListViewController: UITableViewController {
     
     /// :nodoc:
     public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return sections[section].title == nil ? 0 : 44.0
+        return sections[section].title == nil ? 0.01 : 44.0
     }
     
     /// :nodoc:
