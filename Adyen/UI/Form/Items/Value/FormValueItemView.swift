@@ -108,7 +108,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
     private func configureConstraints() {
         let constraints = [
             separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: 1.0)
         ]
