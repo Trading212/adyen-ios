@@ -15,6 +15,8 @@ internal final class PaymentMethodListComponent: PresentableComponent {
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
     
+    internal var automaticallySelectFirstItemOnFirstAppear = false
+    
     /// Initializes the list component.
     ///
     /// - Parameter components: The components to display in the list.
@@ -25,9 +27,7 @@ internal final class PaymentMethodListComponent: PresentableComponent {
     // MARK: - View Controller
     
     /// :nodoc:
-    internal lazy var viewController: UIViewController = {
-        listViewController
-    }()
+    internal lazy var viewController: UIViewController = listViewController
     
     private lazy var listViewController: ListViewController = {
         func item(for component: PaymentComponent) -> ListItem {
@@ -52,6 +52,7 @@ internal final class PaymentMethodListComponent: PresentableComponent {
         let listViewController = ListViewController()
         listViewController.title = ADYLocalizedString("adyen.paymentMethods.title")
         listViewController.sections = [storedSection, regularSection]
+        listViewController.automaticallySelectFirstItemOnFirstAppear = automaticallySelectFirstItemOnFirstAppear
         
         return listViewController
     }()

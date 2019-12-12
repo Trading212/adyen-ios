@@ -48,12 +48,12 @@ public final class DropInComponent: PresentableComponent {
     public lazy var viewController: UIViewController = {
         Analytics.sendEvent(component: componentName, flavor: .dropin, environment: environment)
         
-        if self.configuration.navigation.flattensSinglePaymentMethodConfiguration,
-            self.components.stored.isEmpty,
-            self.components.regular.count == 1,
-            let component = self.components.regular.first as? PaymentComponent & PresentableComponent {
+        if configuration.navigation.flattensSinglePaymentMethodNavigation,
+            components.stored.isEmpty,
+            components.regular.count == 1,
+            let component = components.regular.first as? PaymentComponent & PresentableComponent {
             
-            self.selectedPaymentComponent = component
+            selectedPaymentComponent = component
             component.delegate = self
             component._isDropIn = true
             component.environment = environment
@@ -94,6 +94,7 @@ public final class DropInComponent: PresentableComponent {
         paymentMethodListComponent.delegate = self
         paymentMethodListComponent._isDropIn = true
         paymentMethodListComponent.environment = environment
+        paymentMethodListComponent.automaticallySelectFirstItemOnFirstAppear = configuration.navigation.flattensSinglePaymentMethodNavigation
         
         return paymentMethodListComponent
     }()

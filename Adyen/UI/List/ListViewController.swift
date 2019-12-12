@@ -10,6 +10,8 @@ import UIKit
 /// :nodoc:
 public final class ListViewController: UITableViewController {
     
+    internal var automaticallySelectFirstItemOnFirstAppear = false
+    
     /// Initializes the list view controller.
     public init() {
         super.init(style: .grouped)
@@ -64,6 +66,8 @@ public final class ListViewController: UITableViewController {
     
     // MARK: - View
     
+    private var isFirstAppear = true
+    
     /// :nodoc:
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +80,21 @@ public final class ListViewController: UITableViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 56.0
         tableView.register(ListCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        defer {
+            isFirstAppear = false
+        }
+        
+        guard isFirstAppear, automaticallySelectFirstItemOnFirstAppear else { return }
+        
+        if sections.count == 1, sections[0].items.count == 1 {
+            let item = sections[0].items[0]
+            item.selectionHandler?()
+        }
     }
     
     // MARK: - UITableView

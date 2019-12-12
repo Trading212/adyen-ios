@@ -49,7 +49,7 @@ extension DropInComponent {
         public final class NavigationConfiguration {
             
             /// Skip the list component if only a single regular payment method is available.
-            public var flattensSinglePaymentMethodConfiguration = true
+            public var flattensSinglePaymentMethodNavigation = true
         }
     }
 }

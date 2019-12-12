@@ -108,6 +108,8 @@ private enum AnyPaymentMethod: Decodable {
                 }
             case "ideal", "entercash", "eps", "dotpay", "openbanking_UK", "molpay_ebanking_fpx_MY", "molpay_ebanking_TH", "molpay_ebanking_VN":
                 self = .issuerList(try IssuerListPaymentMethod(from: decoder))
+            case "giropay", "directEbanking":
+                self = .redirect(try RedirectPaymentMethod(from: decoder))
             case "sepadirectdebit":
                 self = .sepaDirectDebit(try SEPADirectDebitPaymentMethod(from: decoder))
             case "applepay":
