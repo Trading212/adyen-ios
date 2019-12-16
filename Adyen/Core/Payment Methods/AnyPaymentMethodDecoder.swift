@@ -20,6 +20,8 @@ internal enum PaymentMethodType: String {
     case sepaDirectDebit = "sepadirectdebit"
     case applePay = "applepay"
     case payPal = "paypal"
+    case giropay
+    case sofort = "directEbanking"
     case bcmc
 }
 
@@ -38,6 +40,8 @@ internal enum AnyPaymentMethodDecoder {
         .sepaDirectDebit: SEPADirectDebitPaymentMethodDecoder(),
         .applePay: ApplePayPaymentMethodDecoder(),
         .payPal: PayPalPaymentMethodDecoder(),
+        .giropay: UnconditionalRedirectPaymentMethodDecoder(),
+        .sofort: UnconditionalRedirectPaymentMethodDecoder(),
         .bcmc: BCMCCardPaymentMethodDecoder()
     ]
     
@@ -132,6 +136,16 @@ private struct RedirectPaymentMethodDecoder: PaymentMethodDecoder {
             return .redirect(try RedirectPaymentMethod(from: decoder))
         } else {
             return .none
+        }
+    }
+}
+
+private struct UnconditionalRedirectPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+        if isStored {
+            return .storedRedirect(try StoredRedirectPaymentMethod(from: decoder))
+        } else {
+            return .redirect(try RedirectPaymentMethod(from: decoder))
         }
     }
 }
