@@ -27,6 +27,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         }
     }
     
+    /// Indicates if a header with the payment method name should be shown. Defaults to true.
+    public var showsHeader = true
+    
     /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
     public var showsHolderNameField = false
 
@@ -170,10 +173,15 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         let formViewController = FormViewController()
         formViewController.localizationTable = localizationTable
         
-        let headerItem = FormHeaderItem()
-        headerItem.title = paymentMethod.name
-        headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
-        formViewController.append(headerItem)
+        if showsHeader {
+            let headerItem = FormHeaderItem()
+            headerItem.title = paymentMethod.name
+            headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
+            formViewController.append(headerItem)
+        } else {
+            formViewController.title = paymentMethod.name
+        }
+        
         formViewController.append(numberItem, using: FormCardNumberItemView.self)
         
         if showsSecurityCodeField {

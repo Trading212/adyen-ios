@@ -31,6 +31,9 @@ extension DropInComponent {
             /// The public key used for encrypting card details.
             public var publicKey: String?
             
+            /// Indicates if a header with the payment method name should be shown. Defaults to true.
+            public var showsHeader = true
+            
             /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
             public var showsHolderNameField = false
             
