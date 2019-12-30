@@ -42,6 +42,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// Indicates the card brands excluded from the supported brands.
     internal var excludedCardTypes: Set<CardType> = [.bcmc]
     
+    /// The initial (prefilled) value of the card holder name field. Default is nil.
+    internal var cardHolderPrefill: String?
+    
     private var _supportedCardTypes: [CardType]
     
     /// Initializes the card component.
@@ -248,6 +251,10 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         holderNameItem.validationFailureMessage = ADYLocalizedString("adyen.card.nameItem.invalid", localizationTable)
         holderNameItem.autocapitalizationType = .words
         holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "holderNameItem")
+        
+        if let cardHolderPrefill = cardHolderPrefill {
+            holderNameItem.value = cardHolderPrefill
+        }
         
         return holderNameItem
     }()

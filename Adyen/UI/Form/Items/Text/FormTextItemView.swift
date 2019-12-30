@@ -88,6 +88,7 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         textField.accessibilityLabel = item.title
         textField.delegate = self
         textField.addTarget(self, action: #selector(textDidChange(textField:)), for: .editingChanged)
+        textField.text = item.value
         
         return textField
     }()

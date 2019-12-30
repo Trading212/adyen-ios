@@ -40,6 +40,9 @@ extension DropInComponent {
             /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
             public var showsStorePaymentMethodField = true
             
+            /// The initial (prefilled) value of the card holder name field. Default is nil.
+            public var cardHolderPrefill: String?
+            
         }
         
         public final class ApplePayConfiguration {
