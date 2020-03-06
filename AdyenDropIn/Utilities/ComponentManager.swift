@@ -82,6 +82,7 @@ internal final class ComponentManager {
         cardComponent.showsHolderNameField = cardConfiguration.showsHolderNameField
         cardComponent.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         cardComponent.cardHolderPrefill = cardConfiguration.cardHolderPrefill
+        cardComponent.footerTitle = cardConfiguration.footerTitle
         
         return cardComponent
     }

@@ -37,6 +37,9 @@ extension DropInComponent {
             /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
             public var showsHolderNameField = false
             
+            /// Stores footer's title.
+            public var footerTitle: String?
+            
             /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
             public var showsStorePaymentMethodField = true
             

@@ -35,6 +35,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
 
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
     public var showsStorePaymentMethodField = true
+    
+    /// Stores footer's title.
+    public var footerTitle: String?
 
     /// Indicates whether to show the security code field at all.
     internal var showsSecurityCodeField = true
@@ -271,6 +274,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     internal lazy var footerItem: FormFooterItem = {
         let footerItem = FormFooterItem()
+        footerItem.title = footerTitle
         footerItem.submitButtonTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationTable)
         footerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footer")
         footerItem.submitButtonSelectionHandler = { [weak self] in
