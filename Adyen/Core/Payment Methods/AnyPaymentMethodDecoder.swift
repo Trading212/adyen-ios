@@ -6,6 +6,12 @@
 
 import Foundation
 
+private extension Array where Element == PaymentMethodField {
+    var isAnyFieldRequired: Bool {
+        contains { $0.isRequired }
+    }
+}
+
 internal enum PaymentMethodType: String {
     case card
     case scheme
@@ -23,6 +29,29 @@ internal enum PaymentMethodType: String {
     case giropay
     case sofort = "directEbanking"
     case bcmc
+    case bcmcMobileQR = "bcmc_mobile_QR"
+    case weChatMiniProgram = "wechatpayMiniProgram"
+    case weChatQR = "wechatpayQR"
+    case weChatWeb = "wechatpayWeb"
+    case weChatSDK = "wechatpaySDK"
+}
+
+private struct PaymentMethodField: Decodable {
+    
+    fileprivate var key: String
+    
+    fileprivate var type: String
+    
+    fileprivate var isOptional: Bool?
+    
+    fileprivate var isRequired: Bool {
+        isOptional.map { !$0 } ?? true
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case key, type, isOptional = "optional"
+    }
+    
 }
 
 internal enum AnyPaymentMethodDecoder {
@@ -40,9 +69,12 @@ internal enum AnyPaymentMethodDecoder {
         .sepaDirectDebit: SEPADirectDebitPaymentMethodDecoder(),
         .applePay: ApplePayPaymentMethodDecoder(),
         .payPal: PayPalPaymentMethodDecoder(),
-        .giropay: UnconditionalRedirectPaymentMethodDecoder(),
-        .sofort: UnconditionalRedirectPaymentMethodDecoder(),
-        .bcmc: BCMCCardPaymentMethodDecoder()
+        .bcmc: BCMCCardPaymentMethodDecoder(),
+        .bcmcMobileQR: BlacklistedPaymentMethodDecoder(),
+        .weChatMiniProgram: BlacklistedPaymentMethodDecoder(),
+        .weChatQR: BlacklistedPaymentMethodDecoder(),
+        .weChatWeb: BlacklistedPaymentMethodDecoder(),
+        .weChatSDK: BlacklistedPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -52,7 +84,8 @@ internal enum AnyPaymentMethodDecoder {
             let container = try decoder.container(keyedBy: AnyPaymentMethod.CodingKeys.self)
             let type = try container.decode(String.self, forKey: .type)
             let isStored = decoder.codingPath.contains { $0.stringValue == PaymentMethods.CodingKeys.stored.stringValue }
-            let requiresDetails = container.contains(.details)
+            let details = try container.decodeIfPresent([PaymentMethodField].self, forKey: .details)
+            let requiresDetails = details?.isAnyFieldRequired ?? false
             let brand = try? container.decode(String.self, forKey: .brand)
             
             // This is a hack to handle stored Bancontact as a separate
@@ -140,12 +173,8 @@ private struct RedirectPaymentMethodDecoder: PaymentMethodDecoder {
     }
 }
 
-private struct UnconditionalRedirectPaymentMethodDecoder: PaymentMethodDecoder {
+private struct BlacklistedPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        if isStored {
-            return .storedRedirect(try StoredRedirectPaymentMethod(from: decoder))
-        } else {
-            return .redirect(try RedirectPaymentMethod(from: decoder))
-        }
+        return .none
     }
 }
