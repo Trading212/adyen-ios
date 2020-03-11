@@ -40,6 +40,9 @@ extension DropInComponent {
             /// Stores footer's title.
             public var footerTitle: String?
             
+            /// Stores submit button's title.
+            public var submitButtonTitle: String?
+            
             /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
             public var showsStorePaymentMethodField = true
             

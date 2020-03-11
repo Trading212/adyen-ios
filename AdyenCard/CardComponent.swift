@@ -38,6 +38,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// Stores footer's title.
     public var footerTitle: String?
+    
+    /// Stores submit button's title.
+    public var submitButtonTitle: String?
 
     /// Indicates whether to show the security code field at all.
     internal var showsSecurityCodeField = true
@@ -275,7 +278,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     internal lazy var footerItem: FormFooterItem = {
         let footerItem = FormFooterItem()
         footerItem.title = footerTitle
-        footerItem.submitButtonTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationTable)
+        footerItem.submitButtonTitle = submitButtonTitle ?? ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationTable)
         footerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footer")
         footerItem.submitButtonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
