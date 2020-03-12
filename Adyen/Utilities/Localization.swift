@@ -30,22 +30,13 @@ private struct LocalizationInput {
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
 public func ADYLocalizedString(_ key: String, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
     
-    //TODO: - Implement global configuration "LocalizationProvider"
-//    var result = fallbackLocalizedString(key: key)
-//
-//    let possibleInputs = buildPossibleInputs(key, parameters)
-//
-//    if let localizedString = attempt(possibleInputs) {
-//        result = localizedString
-//    }
+    var result = fallbackLocalizedString(key: key)
     
-    // Check main application bundle first, then try internal one.
-    let result: String = {
-        let localized = NSLocalizedString(key, tableName: parameters?.tableName, bundle: Bundle.main, comment: "")
-        
-        guard localized != key, localized.isEmpty == false else { return NSLocalizedString(key, tableName: parameters?.tableName, bundle: Bundle.internalResources, comment: "") }
-        return localized
-    }()
+    let possibleInputs = buildPossibleInputs(key, parameters)
+    
+    if let localizedString = attempt(possibleInputs) {
+        result = localizedString
+    }
     
     guard !arguments.isEmpty else {
         return result
